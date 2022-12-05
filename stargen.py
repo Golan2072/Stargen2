@@ -92,10 +92,57 @@ class Star:
             return " "
     
     def type_gen(self):
-        if self.hydrographics >= 1:
+        if self.hydrographics >= 1 and self.atmosphere in range (1, 9):
             return "@"
-        if self.hydrographics < 1:
+        elif self.hydrographics >= 1 and self.atmosphere >= 10:
+            return "&"
+        elif self.hydrographics >= 1 and self.atmosphere <= 1:
+            return "#"
+        elif self.hydrographics < 1:
             return "0"
+        elif self.size == 0:
+            return "*"
+        else:
+            return " "
+
+    def name_gen(self):
+        return utility.random_line("./data/worlds.txt")
+
+    def scout_gen (self):
+        roll = utility.dice(2, 6)
+        if self.starport in ["X", "E"]:
+            pass
+        elif self.starport == "D":
+            if roll >= 7:
+                return "S"
+            else:
+                return ""
+        elif self.starport == "C":
+            if roll >= 8:
+                return "S"
+            else:
+                return ""
+        elif self.starport == "B":
+            if roll >= 9:
+                return "S"
+            else: return ""
+        elif self.starport == "C":
+            if roll >= 10:
+                return "S"
+            else:
+                return ""
+        else:
+            return ""
+
+    def naval_gen (self):
+        if self.starport in ["A", "B"]:
+            roll = utility.dice(2, 6)
+            if roll >= 8:
+                return "N"
+            else:
+                return ""
+        else:
+            return ""
 
     def __init__(self, hex_column, hex_row):
         if utility.dice(1, 6) >= 4:
@@ -108,9 +155,9 @@ class Star:
             self.startype = self.type_gen()
             self.gas_giant = self.gas_gen()
             self.starport = self.starport_gen()
-            self.naval = " "
-            self.scout = " "
-            self.names = "TEST"
+            self.scout = self.scout_gen()
+            self.naval = self.naval_gen()
+            self.names = self.name_gen()
             self.column = hex_column
             self.row = hex_row
         else:
@@ -124,7 +171,7 @@ class Star:
             self.gas_giant = " "
             self.starport = "   "
             self.naval = " "
-            self.scout = " "
+            self.scout = self.scout_gen()
             self.names = "       "
             self.column = hex_column
             self.row = hex_row
